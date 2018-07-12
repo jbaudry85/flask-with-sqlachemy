@@ -28,3 +28,9 @@ def products():
     products = db.session.query(Product).all()
     return products_schema.jsonify(products)
 
+@app.route('/api/v1/products/<id>')
+def get_product():
+    product = db.session.query(Product).get(int(id))
+    return products_schema.jsonify(product)
+
+
