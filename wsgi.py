@@ -3,9 +3,9 @@ try:
     from dotenv import load_dotenv
     load_dotenv()
 except:
-    pass # Heroku does not use .env
+        pass # Heroku does not use .env
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -24,10 +24,15 @@ from schemas import product_schema
 def hello():
     return "Hello World!"
 
+@app.route('/index')
+def index():
+    user = {'username': 'JP'}
+    return render_template('index.html', title='Home', user=user)
+
 @app.route('/api/v1/products')
 def products():
     products = db.session.query(Product).all()
-    return products_schema.jsonify(products)
+    return render_template('products.html', title='Products', products=products)
 
 @app.route('/api/v1/products/<id>')
 def get_product(id):
